@@ -1,0 +1,1 @@
+p2p_aggregator is a pulsar to pulsar connector that aggregates logs with the same msg ID.
