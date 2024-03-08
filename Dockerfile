@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine AS BuilStage
+FROM golang:1.22-alpine AS BuilStage
 
 ENV CGO_ENABLED 0
 

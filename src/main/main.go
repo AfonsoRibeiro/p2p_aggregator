@@ -10,12 +10,12 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"github.com/apache/pulsar-client-go/pulsar"
-	"github.com/apache/pulsar-client-go/pulsar/log"
+	pulsar_log "github.com/apache/pulsar-client-go/pulsar/log"
 )
 
 func logging(level string) {
-	logrus.SetFormatter(&logrus.TextFormatter{
-		FullTimestamp:   true,
+	logrus.SetFormatter(&logrus.JSONFormatter{
+		//FullTimestamp:   true,
 		TimestampFormat: "2006-01-02T15:04:05.000Z07:00",
 	})
 	l, err := logrus.ParseLevel(level)
@@ -34,12 +34,17 @@ func new_client(url string, trust_cert_file string, cert_file string, key_file s
 		auth = pulsar.NewAuthenticationTLS(cert_file, key_file)
 	}
 
+	log := logrus.New()
+	log.SetFormatter(&logrus.JSONFormatter{
+		TimestampFormat: "2006-01-02T15:04:05.000Z07:00",
+	})
+
 	client, err = pulsar.NewClient(pulsar.ClientOptions{
 		URL:                        url,
 		TLSAllowInsecureConnection: allow_insecure_connection,
 		Authentication:             auth,
 		TLSTrustCertsFilePath:      trust_cert_file,
-		Logger:                     log.NewLoggerWithLogrus(logrus.New()),
+		Logger:                     pulsar_log.NewLoggerWithLogrus(log),
 	})
 
 	if err != nil {

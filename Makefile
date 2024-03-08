@@ -1,6 +1,6 @@
 container_name="p2p_aggregator"
 image_name="p2p_aggregator"
-image_version="1.1.9-ack"
+image_version="1.1.10-ack"
 
 run_debug: build_go
 	./${container_name} --log_level=debug --source_allow_insecure_connection=true --dest_allow_insecure_connection=true
@@ -42,8 +42,7 @@ build_cache:
 	docker build -t ${image_name}:${image_version} .
 
 docker_hub: build
-	docker tag ${image_name}:${image_version} xcjsbsx/${image_name}:${image_version}
-	docker push xcjsbsx/${image_name}:${image_version}
+	./push_dockerhub.sh ${image_name} ${image_version}
 
 start_pulsar:
 	docker run -d --rm --name pulsar -v ./standalone.conf:/pulsar/conf/standalone.conf \
