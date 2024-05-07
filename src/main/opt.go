@@ -54,7 +54,6 @@ func from_args() opt {
 
 	flag.StringVar(&opt.destpulsar, "dest_pulsar", "pulsar://localhost:6650", "Destination pulsar address")
 	flag.StringVar(&opt.desttopic, "dest_topic", "persistent://public/default/out", "Destination topic name")
-	flag.StringVar(&opt.destsubscription, "dest_subscription", "p2p_aggregator", "Destination subscription name")
 	flag.StringVar(&opt.destname, "dest_name", "aggregator_consumer", "Destination producer name")
 	flag.StringVar(&opt.desttrustcerts, "dest_trust_certs", "", "Path for destination pem file, for ca.cert")
 	flag.StringVar(&opt.destcertfile, "dest_cert_file", "", "Path for destination cert.pem file")
@@ -66,7 +65,7 @@ func from_args() opt {
 	flag.UintVar(&opt.batchingmaxsize, "batch_max_size", 512*1024, "Max batch size in bytes")
 
 	flag.Int64Var(&opt.timedelta, "time_delta", 10, "The delta in seconds between the first and last aggregation")
-	flag.Uint64Var(&opt.maxaggregatedsize, "max_aggregated_size", 512*1024, "Max size in bytes on aggregation")
+	flag.Uint64Var(&opt.maxaggregatedsize, "max_aggregated_size", 256*1024, "Max size in bytes on aggregation")
 	flag.Uint64Var(&opt.maxtotalinflightsize, "max_total_inflight_size", 1024*1024*1024, "Max total messages size in bytes")
 
 	flag.BoolVar(&opt.pprofon, "pprof_on", false, "Profoling on?")

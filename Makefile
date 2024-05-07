@@ -1,6 +1,6 @@
 container_name="p2p_aggregator"
 image_name="p2p_aggregator"
-image_version="1.1.10-ack"
+image_version="1.1.10"
 
 run_debug: build_go
 	./${container_name} --log_level=debug --source_allow_insecure_connection=true --dest_allow_insecure_connection=true

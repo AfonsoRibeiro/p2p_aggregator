@@ -70,8 +70,8 @@ func P2p_aggregator(consume_chan <-chan pulsar.ConsumerMessage, write_chan chan<
 
 			last_publish_time = msg.PublishTime()
 
-			// FIXME remove
-			ack_chan <- msg
+			// // FIXME remove
+			// ack_chan <- msg
 
 		case <-tick.C:
 			since := time.Since(last_instant)

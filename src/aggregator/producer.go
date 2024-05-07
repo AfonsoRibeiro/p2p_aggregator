@@ -11,15 +11,16 @@ import (
 
 func write_callback(agg []pulsar.ConsumerMessage, ack_chan chan<- pulsar.ConsumerMessage) func(msgID pulsar.MessageID, pm *pulsar.ProducerMessage, err error) {
 	return func(msgID pulsar.MessageID, pm *pulsar.ProducerMessage, err error) {
-		//if err == nil {Inflight_messages
-		// for i := range agg {
-		// 	// FIXME uncomment
-		// 	//ack_chan <- (agg)[i]
-		// }
-		// } else {
-		// 	//FIXME nack
-		//	// TODO metric nack
-		// }
+		if err == nil {
+			// Inflight_messages
+			for i := range agg {
+				// FIXME uncomment
+				ack_chan <- agg[i]
+			}
+		} else {
+			//FIXME nack
+			// TODO metric nack
+		}
 		prom_metrics.Prom_metric.Inc_number_writen_msg()
 	}
 }
@@ -39,10 +40,10 @@ func Writer(producer pulsar.Producer, write_chan <-chan []pulsar.ConsumerMessage
 			cap := final_agg_size(agg)
 
 			if cap > int(batchingmaxsize) {
-				// for i := range agg {
-				// 	// FIXME uncomment
-				// 	//ack_chan <- agg[i]
-				// }
+				for i := range agg {
+					// FIXME uncomment
+					ack_chan <- agg[i]
+				}
 				n_ignored++
 				// TODO metric ignored
 			} else {
