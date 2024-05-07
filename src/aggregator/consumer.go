@@ -58,15 +58,20 @@ func P2p_aggregator(consume_chan <-chan pulsar.ConsumerMessage, write_chan chan<
 			cont.agg_size += uint64(len(msg.Payload()))
 			mf.total_size += uint64(len(msg.Payload()))
 
-			if cont.agg_size < maxaggregatedsize {
+			delta := cont.max_publish_time - cont.min_publish_time
+
+			if cont.agg_size < maxaggregatedsize && delta < 2*time_delta {
 				agg.Push(msg.Key(), *cont)
-			} else {
+			} else if cont.agg_size >= maxaggregatedsize {
 				agg.PullKey(msg.Key())
 				k := msg.Key()
 				mf.ExpiredHandler(&k, cont)
 
 				// TODO metric pushed due to size
 			}
+			// else {
+			// do nothing (dont push if delta > 2*time_delta)
+			//}
 
 			last_publish_time = msg.PublishTime()
 
